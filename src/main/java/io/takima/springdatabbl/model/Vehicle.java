@@ -10,19 +10,19 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@Entity
 @Getter
 @Setter
 @ToString
 @Accessors(chain = true)
-public class Vehicule {
+@Entity(name = "vehicles")
+public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String marque;
-    private String modele;
+    private String brand;
+    private String model;
 
     @ManyToOne
     private User user;

@@ -1,19 +1,20 @@
 package io.takima.springdatabbl.dao;
 
 import io.takima.springdatabbl.model.User;
-import io.takima.springdatabbl.model.Vehicule;
-import org.springframework.data.repository.Repository;
+import io.takima.springdatabbl.model.Vehicle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface VehiculeRepository extends Repository<Vehicule, Long> {
+public interface VehiculeRepository extends JpaRepository<Vehicle, Long> {
 
-    Vehicule save(Vehicule vehicule);
+    @Query(value = "SELECT v FROM vehicles v WHERE v.brand = :brand")
+    Optional<Vehicle> findByBrand(@Param("brand") String brand);
 
-    Optional<Vehicule> findById(Long id);
+    Optional<Vehicle> findByModel(String model);
 
-    Optional<Vehicule> findByMarque(String marque);
-
-    List<Vehicule> findAllByUser(User user);
+    List<Vehicle> findAllByUser(User user);
 }
