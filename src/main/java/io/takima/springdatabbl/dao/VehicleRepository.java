@@ -9,7 +9,19 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface VehiculeRepository extends JpaRepository<Vehicle, Long> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+
+    @Query(value = "SELECT v FROM vehicles v JOIN FETCH v.user u WHERE v.id = :id")
+    Optional<Vehicle> findVehicleById(Long id);
+
+
+
+
+
+
+
+
+
 
     @Query(value = "SELECT v FROM vehicles v WHERE v.brand = :brand")
     Optional<Vehicle> findByBrand(@Param("brand") String brand);

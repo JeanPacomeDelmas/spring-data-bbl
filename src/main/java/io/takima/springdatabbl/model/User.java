@@ -1,6 +1,7 @@
 package io.takima.springdatabbl.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public class User {
 
     private String name;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user")
+//    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Vehicle> vehicles;
 }

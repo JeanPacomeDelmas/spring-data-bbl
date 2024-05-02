@@ -9,10 +9,19 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByVehiclesContaining(Vehicle vehicle);
+    @Query("""
+            SELECT u FROM users u LEFT JOIN FETCH vehicles v WHERE u.id = :id
+            """)
+    Optional<User> findUserById(Long id);
+
+    Optional<User> findByVehiclesContaining(Vehicle vehicle); // explain analyse
 
     Optional<User> findByVehiclesId(Long vehicleId);
 
-    @Query("select u from users u left join vehicles v on u.id = v.user.id")
+    @Query("""
+            SELECT u FROM users u
+                LEFT JOIN FETCH u.vehicles v
+                WHERE u.id = v.user.id
+    """)
     Optional<User> findByVehicle(Vehicle vehicle);
 }
