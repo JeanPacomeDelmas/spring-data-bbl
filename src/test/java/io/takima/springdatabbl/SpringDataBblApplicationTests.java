@@ -1,22 +1,22 @@
 package io.takima.springdatabbl;
 
 import io.takima.springdatabbl.model.Barman;
-import io.takima.springdatabbl.model.Cocktail;
-import io.takima.springdatabbl.model.Ingredient;
 import io.takima.springdatabbl.service.BarmanService;
 import io.takima.springdatabbl.service.CocktailService;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
+import static io.takima.springdatabbl.SetupUtil.getMojito;
+import static io.takima.springdatabbl.SetupUtil.getPinaColada;
+import static io.takima.springdatabbl.SetupUtil.getSexOnTheBeach;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -31,37 +31,29 @@ class SpringDataBblApplicationTests {
     CocktailService cocktailService;
 
     @Autowired
-    EntityManager entityManager;
+    JdbcTemplate jdbcTemplate;
 
     @BeforeAll
     void beforeAll() {
         Barman valentin = barmanService.save(new Barman().setName("Valentin"));
         Barman jp = barmanService.save(new Barman().setName("JP"));
 
-        Cocktail mojito = cocktailService.save(
-                new Cocktail()
-                        .setName("mojito")
-                        .setBarman(jp)
-                        .setIngredients(List.of(Ingredient.MINT, Ingredient.WHITE_RHUM, Ingredient.LEMON, Ingredient.LEMONADE))
-        );
+        cocktailService.save(getMojito().setBarman(jp));
+        cocktailService.save(getSexOnTheBeach().setBarman(valentin));
+    }
 
-        Cocktail sexOnTheBeach = cocktailService.save(
-                new Cocktail()
-                        .setName("sex on the beach")
-                        .setBarman(valentin)
-                        .setIngredients(List.of(Ingredient.VODKA, Ingredient.ORANGE_JUICE, Ingredient.CRANBERRY_JUICE))
-        );
-
-        Cocktail pinaColada = cocktailService.save(
-                new Cocktail()
-                        .setName("pina colada")
-                        .setIngredients(List.of(Ingredient.WHITE_RHUM, Ingredient.AMBER_RHUM, Ingredient.PINEAPPLE_JUICE, Ingredient.COCONUT_MILK))
-        );
+    @AfterAll
+    void afterAll() {
+        jdbcTemplate.execute("TRUNCATE TABLE barman cascade");
+        jdbcTemplate.execute("TRUNCATE TABLE cocktail cascade");
+        jdbcTemplate.execute("TRUNCATE TABLE cocktail_ingredients cascade");
+        jdbcTemplate.execute("ALTER SEQUENCE barman_seq RESTART WITH 1");
+        jdbcTemplate.execute("ALTER SEQUENCE cocktail_seq RESTART WITH 1");
     }
 
     @AfterEach
     void tearDown() {
-        entityManager.clear();
+        cocktailService.deleteById(3L);
     }
 
     @Test
@@ -84,15 +76,13 @@ class SpringDataBblApplicationTests {
 
     @Test
     void updatePinaColada_withReference() {
-        String newName = "Valentin le bg trop con";
-        var valentin = barmanService.updateNameWithReference(1L, newName);
-        assertThat(valentin).extracting("name").isEqualTo(newName);
+        var pinaColada = cocktailService.saveWithBarmanByReference(getPinaColada(), 2L);
+        assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
     }
 
     @Test
     void updatePinaColada_withFind() {
-        String newName = "Valentin le bg";
-        var valentin = barmanService.updateNameWithFind(1L, newName);
-        assertThat(valentin).extracting("name").isEqualTo(newName);
+        var pinaColada = cocktailService.saveWithBarmanByFind(getPinaColada(), 2L);
+        assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
     }
 }
