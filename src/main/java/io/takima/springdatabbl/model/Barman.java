@@ -5,7 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,8 +26,8 @@ public class Barman {
 
     private String name;
 
-//    @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
-//    @ManyToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "barman", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "barman", fetch = FetchType.EAGER)
     List<Cocktail> cocktails;
 }

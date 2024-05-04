@@ -7,7 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +16,6 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -32,13 +31,15 @@ public class Cocktail {
     private String name;
 
     @Enumerated
-    @ElementCollection
-    private Set<Ingredient> ingredients;
+    @ToString.Exclude
+    @ElementCollection(fetch = FetchType.LAZY)
+//    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Ingredient> ingredients;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "cocktails", fetch = FetchType.LAZY)
-//    @ManyToMany(mappedBy = "cocktails", fetch = FetchType.EAGER)
-    private List<Barman> barmans;
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(fetch = FetchType.LAZY)
+    private Barman barman;
 
     @Override
     public final boolean equals(Object o) {

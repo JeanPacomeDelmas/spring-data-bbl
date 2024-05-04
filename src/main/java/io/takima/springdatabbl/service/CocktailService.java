@@ -15,21 +15,12 @@ public class CocktailService {
 
     private final CocktailRepository cocktailRepository;
 
-    public Cocktail findById(Long vehicleId) {
-        Cocktail cocktail = cocktailRepository.findById(vehicleId).orElseThrow();
+    public Cocktail findById(Long id) {
+        Cocktail cocktail = cocktailRepository.findById(id).orElseThrow();
         log.info("findById: {}", cocktail);
         return cocktail;
     }
 
-    public Cocktail findByIdWithBarmans(Long vehicleId) {
-        Cocktail cocktail = cocktailRepository.findByIdWithBarmans(vehicleId).orElseThrow();
-        log.info("findByIdWithBarmans: {}", cocktail);
-        return cocktail;
-    }
-
-//    public Cocktail getReferenceById(Long id) {
-//        return cocktailRepository.getReferenceById(id);
-//    }
 
     @Transactional
     public Cocktail save(Cocktail cocktail) {
