@@ -2,6 +2,7 @@ package io.takima.springdatabbl.model;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@FieldNameConstants
 @Accessors(chain = true)
 @Entity
 public class Cocktail {
@@ -30,8 +33,8 @@ public class Cocktail {
 
     private String name;
 
-    @Enumerated
     @ToString.Exclude
+    @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
 //    @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredient> ingredients;

@@ -3,16 +3,21 @@ package io.takima.springdatabbl;
 import io.takima.springdatabbl.model.Barman;
 import io.takima.springdatabbl.service.BarmanService;
 import io.takima.springdatabbl.service.CocktailService;
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterAll;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.takima.springdatabbl.SetupUtil.getMojito;
 import static io.takima.springdatabbl.SetupUtil.getPinaColada;
@@ -21,7 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
+@ExtendWith(SoftAssertionsExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SpringDataBblApplicationTests {
 
     @Autowired
@@ -30,8 +37,8 @@ class SpringDataBblApplicationTests {
     @Autowired
     CocktailService cocktailService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    @InjectSoftAssertions
+    SoftAssertions softly;
 
     @BeforeAll
     void beforeAll() {
@@ -42,47 +49,59 @@ class SpringDataBblApplicationTests {
         cocktailService.save(getSexOnTheBeach().setBarman(valentin));
     }
 
-    @AfterAll
-    void afterAll() {
-        jdbcTemplate.execute("TRUNCATE TABLE barman cascade");
-        jdbcTemplate.execute("TRUNCATE TABLE cocktail cascade");
-        jdbcTemplate.execute("TRUNCATE TABLE cocktail_ingredients cascade");
-        jdbcTemplate.execute("ALTER SEQUENCE barman_seq RESTART WITH 1");
-        jdbcTemplate.execute("ALTER SEQUENCE cocktail_seq RESTART WITH 1");
-    }
-
     @AfterEach
     void tearDown() {
-        cocktailService.deleteById(3L);
+        cocktailService.deleteByName(getPinaColada().getName());
     }
 
     @Test
+    @Order(1)
     void findValentinById_withoutCocktails() {
         var valentin = barmanService.findByIdWithoutCocktails(1L);
-        assertThat(valentin).extracting("name").isEqualTo("Valentin");
+        softly.assertThat(valentin)
+                .extracting("name")
+                .isEqualTo("Valentin");
+        softly.assertThatExceptionOfType(LazyInitializationException.class)
+                .isThrownBy(() -> valentin.getCocktails().toString());
     }
 
     @Test
+    @Order(2)
     void findValentinById_withLazyCocktails() {
         var valentin = barmanService.findByIdWithLazyCocktails(1L);
-        assertThat(valentin).extracting("name").isEqualTo("Valentin");
+        softly.assertThat(valentin)
+                .extracting("name")
+                .isEqualTo("Valentin");
+        softly.assertThat(valentin.getCocktails())
+                .singleElement()
+                .extracting("name")
+                .isEqualTo("sex on the beach");
     }
 
     @Test
+    @Order(3)
     void findValentinById_findById_withEagerCocktails() {
         var valentin = barmanService.findByIdWithEagerCocktails(1L);
-        assertThat(valentin).extracting("name").isEqualTo("Valentin");
+        softly.assertThat(valentin)
+                .extracting("name")
+                .isEqualTo("Valentin");
+        softly.assertThat(valentin.getCocktails())
+                .singleElement()
+                .extracting("name")
+                .isEqualTo("sex on the beach");
     }
 
     @Test
-    void updatePinaColada_withReference() {
-        var pinaColada = cocktailService.saveWithBarmanByReference(getPinaColada(), 2L);
+    @Order(4)
+    void updatePinaColada_withFind() {
+        var pinaColada = cocktailService.saveWithBarmanByFind(getPinaColada(), 2L);
         assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
     }
 
     @Test
-    void updatePinaColada_withFind() {
-        var pinaColada = cocktailService.saveWithBarmanByFind(getPinaColada(), 2L);
+    @Order(5)
+    void updatePinaColada_withReference() {
+        var pinaColada = cocktailService.saveWithBarmanByReference(getPinaColada(), 2L);
         assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
     }
 }

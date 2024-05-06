@@ -1,5 +1,6 @@
 package io.takima.springdatabbl.service;
 
+import io.takima.springdatabbl.Monitored;
 import io.takima.springdatabbl.dao.BarmanRepository;
 import io.takima.springdatabbl.dao.CocktailRepository;
 import io.takima.springdatabbl.model.Barman;
@@ -18,24 +19,28 @@ public class CocktailService {
     private final BarmanRepository barmanRepository;
     private final CocktailRepository cocktailRepository;
 
+    @Monitored
     public Cocktail findById(Long id) {
         Cocktail cocktail = cocktailRepository.findById(id).orElseThrow();
         log.info("Cocktail by id: {}", cocktail);
         return cocktail;
     }
 
+    @Monitored
     @Transactional
     public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.getReferenceById(barmanId);
         return save(cocktail.setBarman(barman));
     }
 
+    @Monitored
     @Transactional
     public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.findById(barmanId).orElseThrow();
         return save(cocktail.setBarman(barman));
     }
 
+    @Monitored
     @Transactional
     public Cocktail save(Cocktail cocktail) {
         Cocktail saved = cocktailRepository.save(cocktail);
@@ -43,7 +48,9 @@ public class CocktailService {
         return saved;
     }
 
-    public void deleteById(Long id) {
-        cocktailRepository.deleteById(id);
+    @Monitored
+    @Transactional
+    public void deleteByName(String name) {
+        cocktailRepository.deleteByName(name);
     }
 }
