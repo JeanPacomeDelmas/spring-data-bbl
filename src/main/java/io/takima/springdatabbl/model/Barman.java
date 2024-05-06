@@ -28,6 +28,5 @@ public class Barman {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "barman", fetch = FetchType.LAZY)
-//    @OneToMany(mappedBy = "barman", fetch = FetchType.EAGER)
-    List<Cocktail> cocktails;
+    private List<Cocktail> cocktails;
 }

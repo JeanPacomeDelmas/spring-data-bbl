@@ -22,8 +22,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@FieldNameConstants
-@Accessors(chain = true)
+@FieldNameConstants // TODO tips
+@Accessors(chain = true) // TODO tips
 @Entity
 public class Cocktail {
 
@@ -36,12 +36,11 @@ public class Cocktail {
     @ToString.Exclude
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
-//    @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredient> ingredients;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.EAGER)
-//    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.EAGER) // getReference nok
+    @ManyToOne(fetch = FetchType.LAZY) // getReference ok
     private Barman barman;
 
     @Override

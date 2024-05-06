@@ -22,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static io.takima.springdatabbl.SetupUtil.getMojito;
 import static io.takima.springdatabbl.SetupUtil.getPinaColada;
 import static io.takima.springdatabbl.SetupUtil.getSexOnTheBeach;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
@@ -95,13 +94,16 @@ class SpringDataBblApplicationTests {
     @Order(4)
     void updatePinaColada_withFind() {
         var pinaColada = cocktailService.saveWithBarmanByFind(getPinaColada(), 2L);
-        assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
+        softly.assertThat(pinaColada.getName()).isEqualTo("pina colada");
+        softly.assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
     }
 
     @Test
     @Order(5)
     void updatePinaColada_withReference() {
         var pinaColada = cocktailService.saveWithBarmanByReference(getPinaColada(), 2L);
-        assertThat(pinaColada).extracting("barman.name").isEqualTo("JP");
+        softly.assertThat(pinaColada.getName()).isEqualTo("pina colada");
+        softly.assertThatExceptionOfType(LazyInitializationException.class)
+                .isThrownBy(() -> pinaColada.getBarman().getName());
     }
 }

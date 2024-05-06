@@ -30,19 +30,23 @@ public class CocktailService {
     @Transactional
     public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.getReferenceById(barmanId);
-        return save(cocktail.setBarman(barman));
+        return cocktailRepository.save(cocktail.setBarman(barman));
     }
 
     @Monitored
     @Transactional
     public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.findById(barmanId).orElseThrow();
-        return save(cocktail.setBarman(barman));
+        return cocktailRepository.save(cocktail.setBarman(barman));
     }
 
     @Monitored
     @Transactional
     public Cocktail save(Cocktail cocktail) {
+        return saveCocktail(cocktail);
+    }
+
+    private Cocktail saveCocktail(Cocktail cocktail) {
         Cocktail saved = cocktailRepository.save(cocktail);
         log.info("Saved cocktail: {}, with barman: {}", saved, saved.getBarman());
         return saved;
