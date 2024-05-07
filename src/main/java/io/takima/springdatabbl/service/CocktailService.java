@@ -25,13 +25,6 @@ public class CocktailService {
     }
 
     @Monitored
-    public Cocktail findById(Long id) {
-        Cocktail cocktail = cocktailRepository.findById(id).orElseThrow();
-        log.info("Cocktail by id: {}", cocktail);
-        return cocktail;
-    }
-
-    @Monitored
     @Transactional
     public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.getReferenceById(barmanId);

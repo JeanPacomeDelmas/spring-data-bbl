@@ -18,10 +18,6 @@ public class BarmanService {
 
     private final BarmanRepository barmanRepository;
 
-    public Barman getReferenceById(Long id) {
-        return barmanRepository.getReferenceById(id);
-    }
-
     @Monitored
     public Barman findByIdWithoutCocktails(Long id) {
         Barman barman = barmanRepository.findById(id).orElseThrow();

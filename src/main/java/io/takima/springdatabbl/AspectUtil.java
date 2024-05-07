@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class Utils {
+public class AspectUtil {
 
     @Around("@annotation(Monitored)")
     public Object monitor(ProceedingJoinPoint pjp) throws Throwable {

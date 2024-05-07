@@ -1,22 +1,16 @@
 package io.takima.springdatabbl.model;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public enum Ingredient {
-    MINT(Unit.CL),
-    LEMONADE(Unit.CL),
-    LEMON(Unit.QUARTER),
-    WHITE_RHUM(Unit.CL),
-    AMBER_RHUM(Unit.CL),
-    VODKA(Unit.CL),
-    ORANGE_JUICE(Unit.CL),
-    CRANBERRY_JUICE(Unit.CL),
-    PINEAPPLE_JUICE(Unit.CL),
-    COCONUT_MILK(Unit.CL),
-    LEMON_JUICE(Unit.CL),
-    SUGAR(Unit.CL)
-    ;
-
-    private final Unit unit;
+    MINT,
+    LEMONADE,
+    LEMON,
+    WHITE_RHUM,
+    AMBER_RHUM,
+    VODKA,
+    ORANGE_JUICE,
+    CRANBERRY_JUICE,
+    PINEAPPLE_JUICE,
+    COCONUT_MILK,
+    LEMON_JUICE,
+    SUGAR
 }

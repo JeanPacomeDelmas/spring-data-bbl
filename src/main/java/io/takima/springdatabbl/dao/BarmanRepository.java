@@ -11,23 +11,15 @@ import java.util.Optional;
 
 public interface BarmanRepository extends JpaRepository<Barman, Long> {
 
-    @Query("""
-            SELECT b FROM Barman b
-                LEFT JOIN FETCH b.cocktails
-                WHERE b.id = :id
-            """)
+    @Query("SELECT b FROM Barman b LEFT JOIN FETCH b.cocktails WHERE b.id = :id")
     Optional<Barman> findByIdWithCocktails(Long id);
 
     Optional<Barman> findByCocktailsContaining(Cocktail cocktail);
 
     Optional<Barman> findByCocktailsId(Long vehicleId);
 
-    List<Barman> findAllByCocktailsIngredientsContaining(Ingredient ingredient);
-
-    @Query("""
-            SELECT b FROM Barman b
-                JOIN FETCH b.cocktails c
-                WHERE c = :cocktail
-            """)
+    @Query("SELECT b FROM Barman b JOIN FETCH b.cocktails c WHERE c = :cocktail")
     Optional<Barman> findByCocktail(Cocktail cocktail);
+
+    List<Barman> findAllByCocktailsIngredientsContaining(Ingredient ingredient);
 }
