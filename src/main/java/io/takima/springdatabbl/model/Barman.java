@@ -10,12 +10,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
+@FieldNameConstants
 @Accessors(chain = true)
 @Entity
 public class Barman {

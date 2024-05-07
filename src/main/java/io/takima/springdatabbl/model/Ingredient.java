@@ -14,6 +14,8 @@ public enum Ingredient {
     CRANBERRY_JUICE(Unit.CL),
     PINEAPPLE_JUICE(Unit.CL),
     COCONUT_MILK(Unit.CL),
+    LEMON_JUICE(Unit.CL),
+    SUGAR(Unit.CL)
     ;
 
     private final Unit unit;

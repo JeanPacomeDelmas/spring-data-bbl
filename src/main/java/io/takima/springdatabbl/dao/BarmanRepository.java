@@ -6,6 +6,7 @@ import io.takima.springdatabbl.model.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BarmanRepository extends JpaRepository<Barman, Long> {
@@ -21,7 +22,7 @@ public interface BarmanRepository extends JpaRepository<Barman, Long> {
 
     Optional<Barman> findByCocktailsId(Long vehicleId);
 
-    Optional<Barman> findByCocktailsIngredientsContaining(Ingredient ingredient);
+    List<Barman> findAllByCocktailsIngredientsContaining(Ingredient ingredient);
 
     @Query("""
             SELECT b FROM Barman b
