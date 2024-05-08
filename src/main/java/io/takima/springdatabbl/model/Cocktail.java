@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class Cocktail {
     @ToString.Exclude
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
+    @BatchSize(size = 2)
     private List<Ingredient> ingredients;
 
     @ToString.Exclude

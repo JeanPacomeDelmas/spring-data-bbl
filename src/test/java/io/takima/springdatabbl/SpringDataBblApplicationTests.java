@@ -1,6 +1,7 @@
 package io.takima.springdatabbl;
 
 import io.takima.springdatabbl.model.*;
+import io.takima.springdatabbl.model.projection.BarmanProjection;
 import io.takima.springdatabbl.service.BarmanService;
 import io.takima.springdatabbl.service.CocktailService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ class SpringDataBblApplicationTests {
         Barman valentin = barmanService.save(getValentin());
         Barman jp = barmanService.save(getJp());
 
-        cocktailService.save(getMOJITO().setBarman(jp));
+        cocktailService.save(getMojito().setBarman(jp));
         cocktailService.save(getSexOnTheBeach().setBarman(valentin));
         cocktailService.save(getDaiquiri().setBarman(valentin));
     }
@@ -154,6 +155,35 @@ class SpringDataBblApplicationTests {
                     .hasSize(2)
                     .extracting(Barman.Fields.name)
                     .isEqualTo(List.of(JP, VALENTIN));
+        }
+    }
+
+    @Nested
+    @Order(4)
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    class Projection {
+        @Test
+        @Order(10)
+        void findBarmanNameById() {
+            Barman valentin = barmanService.findBarmanNameById(1L);
+            softly.assertThat(valentin.getId()).isNull();
+            softly.assertThat(valentin.getName()).isEqualTo(VALENTIN);
+        }
+
+        @Test
+        @Order(11)
+        void findIBarmanProjectionByIdWithStringQuery() {
+            Barman valentin = barmanService.findIBarmanProjectionByIdWithStringQuery(1L);
+            softly.assertThat(valentin.getId()).isNull();
+            softly.assertThat(valentin.getName()).isEqualTo(VALENTIN);
+        }
+
+        @Test
+        @Order(12)
+        void findBarmanProjectionByIdWithStringQuery() {
+            BarmanProjection barmanProjection = barmanService.findBarmanProjectionByIdWithStringQuery(1L);
+            softly.assertThat(barmanProjection.getName()).isEqualTo(VALENTIN);
+            softly.assertThat(barmanProjection.getCocktailNames()).isEqualTo(List.of(SEX_ON_THE_BEACH, DAIQUIRI));
         }
     }
 }

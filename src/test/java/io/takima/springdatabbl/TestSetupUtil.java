@@ -25,7 +25,7 @@ public final class TestSetupUtil {
         return new Barman().setName(JP);
     }
 
-    public static Cocktail getMOJITO() {
+    public static Cocktail getMojito() {
         return new Cocktail()
                 .setName(MOJITO)
                 .setIngredients(List.of(Ingredient.MINT, Ingredient.WHITE_RHUM, Ingredient.LEMON, Ingredient.LEMONADE));

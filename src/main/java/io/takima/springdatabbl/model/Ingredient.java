@@ -1,5 +1,8 @@
 package io.takima.springdatabbl.model;
 
+import org.hibernate.annotations.BatchSize;
+
+@BatchSize(size = 2)
 public enum Ingredient {
     MINT,
     LEMONADE,

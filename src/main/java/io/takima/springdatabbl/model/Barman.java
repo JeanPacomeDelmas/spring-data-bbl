@@ -1,14 +1,7 @@
 package io.takima.springdatabbl.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
@@ -20,6 +13,10 @@ import java.util.List;
 @FieldNameConstants
 @Accessors(chain = true)
 @Entity
+@NamedQuery(
+        name = "Barman.findByIdWithCocktails",
+        query = "SELECT b FROM Barman b LEFT JOIN FETCH b.cocktails WHERE b.id = :id"
+)
 public class Barman {
 
     @Id
