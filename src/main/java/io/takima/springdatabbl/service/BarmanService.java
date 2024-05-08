@@ -71,17 +71,20 @@ public class BarmanService {
         return barmanRepository.findAllByCocktailsIngredientsContaining(ingredient);
     }
 
+    @Monitored
     public Barman findBarmanNameById(Long id) {
         IBarmanProjection barmanProjection = barmanRepository.findBarmanById(id).orElseThrow();
         return barmanMapper.toBarman(barmanProjection);
     }
 
+    @Monitored
     public Barman findIBarmanProjectionByIdWithStringQuery(Long id) {
         IBarmanProjection barmanProjection = barmanRepository.findIBarmanProjectionByIdWithStringQuery(id).orElseThrow();
         return barmanMapper.toBarman(barmanProjection);
     }
 
-    public BarmanProjection findBarmanProjectionByIdWithStringQuery(Long id) {
-        return barmanRepository.findBarmanProjectionByIdWithStringQuery(id).orElseThrow();
+    @Monitored
+    public List<BarmanProjection> findBarmansProjectionByIdWithStringQuery(Long id) {
+        return barmanRepository.findBarmansProjectionByIdWithStringQuery(id);
     }
 }

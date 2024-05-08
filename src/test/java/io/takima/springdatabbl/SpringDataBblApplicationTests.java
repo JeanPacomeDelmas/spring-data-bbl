@@ -181,9 +181,10 @@ class SpringDataBblApplicationTests {
         @Test
         @Order(12)
         void findBarmanProjectionByIdWithStringQuery() {
-            BarmanProjection barmanProjection = barmanService.findBarmanProjectionByIdWithStringQuery(1L);
-            softly.assertThat(barmanProjection.getName()).isEqualTo(VALENTIN);
-            softly.assertThat(barmanProjection.getCocktailNames()).isEqualTo(List.of(SEX_ON_THE_BEACH, DAIQUIRI));
+            List<BarmanProjection> barmanProjections = barmanService.findBarmansProjectionByIdWithStringQuery(1L);
+            assertThat(barmanProjections)
+                    .hasSize(2)
+                    .isEqualTo(List.of(BarmanProjection.of(VALENTIN, SEX_ON_THE_BEACH), BarmanProjection.of(VALENTIN, DAIQUIRI)));
         }
     }
 }
