@@ -23,6 +23,15 @@ public class BarmanService {
     private final BarmanRepository barmanRepository;
 
     @Monitored
+    @Transactional
+    public Barman save(Barman barman) {
+        Barman saved = barmanRepository.save(barman);
+        log.info("Saved barman: {}", barman);
+        return saved;
+    }
+
+    // fetch strategy
+    @Monitored
     public Barman findByIdWithoutCocktails(Long id) {
         Barman barman = barmanRepository.findById(id).orElseThrow();
         log.info("Barman by id: {}", barman);
@@ -43,14 +52,7 @@ public class BarmanService {
         return barman;
     }
 
-    @Monitored
-    @Transactional
-    public Barman save(Barman barman) {
-        Barman saved = barmanRepository.save(barman);
-        log.info("Saved barman: {}", barman);
-        return saved;
-    }
-
+    // more complex query
     @Monitored
     public Barman findByCocktailsContaining(Cocktail cocktail) {
         return barmanRepository.findByCocktailsContaining(cocktail).orElseThrow();
@@ -71,6 +73,7 @@ public class BarmanService {
         return barmanRepository.findAllByCocktailsIngredientsContaining(ingredient);
     }
 
+    // projection
     @Monitored
     public Barman findBarmanNameById(Long id) {
         IBarmanProjection barmanProjection = barmanRepository.findBarmanById(id).orElseThrow();

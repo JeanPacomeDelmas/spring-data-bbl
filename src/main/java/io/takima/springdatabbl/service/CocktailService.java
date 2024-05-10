@@ -20,6 +20,20 @@ public class CocktailService {
     private final CocktailRepository cocktailRepository;
 
     @Monitored
+    @Transactional
+    public Cocktail save(Cocktail cocktail) {
+        Cocktail saved = cocktailRepository.save(cocktail);
+        log.info("Saved cocktail: {}, with barman: {}", saved, saved.getBarman());
+        return saved;
+    }
+
+    @Monitored
+    @Transactional
+    public void deleteByName(String name) {
+        cocktailRepository.deleteByName(name);
+    }
+
+    @Monitored
     public Cocktail getReferenceById(Long id) {
         return cocktailRepository.getReferenceById(id);
     }
@@ -42,19 +56,5 @@ public class CocktailService {
     public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
         Barman barman = barmanRepository.findById(barmanId).orElseThrow();
         return saveCocktail(cocktail.setBarman(barman));
-    }
-
-    @Monitored
-    @Transactional
-    public Cocktail save(Cocktail cocktail) {
-        Cocktail saved = cocktailRepository.save(cocktail);
-        log.info("Saved cocktail: {}, with barman: {}", saved, saved.getBarman());
-        return saved;
-    }
-
-    @Monitored
-    @Transactional
-    public void deleteByName(String name) {
-        cocktailRepository.deleteByName(name);
     }
 }

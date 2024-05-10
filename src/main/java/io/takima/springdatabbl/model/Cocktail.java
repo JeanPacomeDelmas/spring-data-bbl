@@ -16,6 +16,10 @@ import java.util.Objects;
 @ToString
 @FieldNameConstants // TODO tips
 @Accessors(chain = true) // TODO tips
+@NamedQuery(
+        name = "Cocktail.findByNameByNamedQuery",
+        query = "SELECT c FROM Cocktail c WHERE c.name = :name"
+)
 public class Cocktail {
 
     @Id

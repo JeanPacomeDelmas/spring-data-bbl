@@ -48,9 +48,10 @@ class SpringDataBblApplicationTests {
     @Nested
     @Order(1)
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class NPlus1Problem {
+    class FetchStrategy {
         @Test
         @Order(1)
+        @SuppressWarnings("all")
         void findValentinById_withoutCocktails() {
             var valentin = barmanService.findByIdWithoutCocktails(1L);
             softly.assertThat(valentin)
@@ -106,6 +107,7 @@ class SpringDataBblApplicationTests {
 
         @Test
         @Order(5)
+        @SuppressWarnings("all")
         void updatePinaColada_withReference() {
             var pinaColada = cocktailService.saveWithBarmanByReference(getPinaColada(), 2L);
             softly.assertThat(pinaColada.getName()).isEqualTo(PINA_COLADA);
@@ -117,7 +119,7 @@ class SpringDataBblApplicationTests {
     @Nested
     @Order(3)
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class BadNamedQuery {
+    class MoreEfficienteQuery {
         @Test
         @Order(6)
         void findJPByCocktail_containing() {

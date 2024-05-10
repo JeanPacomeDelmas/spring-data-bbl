@@ -15,10 +15,6 @@ import java.util.Objects;
 @ToString
 @FieldNameConstants
 @Accessors(chain = true)
-@NamedQuery(
-        name = "Barman.findByIdWithCocktails",
-        query = "SELECT b FROM Barman b LEFT JOIN FETCH b.cocktails WHERE b.id = :id"
-)
 public class Barman {
 
     @Id
