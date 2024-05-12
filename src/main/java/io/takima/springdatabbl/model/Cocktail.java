@@ -1,7 +1,9 @@
 package io.takima.springdatabbl.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.BatchSize;
@@ -54,4 +56,19 @@ public class Cocktail {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+    /* Auditing "callbacks" */
+    @PrePersist
+    public void onPrePersist() {
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+    }
+
+    @PreRemove
+    public void onPreRemove() {
+    }
+
+
 }
