@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -13,6 +15,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+// L2 cache concurrent strategy
+//@Cacheable
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @FieldNameConstants
 @Accessors(chain = true)
 public class Barman {
@@ -43,3 +48,4 @@ public class Barman {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
+

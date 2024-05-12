@@ -28,4 +28,6 @@ public interface BarmanRepository extends JpaRepository<Barman, Long> {
     Optional<IBarmanProjection> findIBarmanProjectionByIdWithStringQuery(Long id);
     @Query("SELECT NEW io.takima.springdatabbl.model.projection.BarmanProjection(b.name AS name, c.name AS cocktailName) FROM Barman b LEFT JOIN b.cocktails c WHERE b.id = :id")
     List<BarmanProjection> findBarmansProjectionByIdWithStringQuery(Long id);
+
+    Optional<Barman> findByName(String name);
 }

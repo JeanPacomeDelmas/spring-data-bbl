@@ -4,6 +4,7 @@ import io.takima.springdatabbl.model.Cocktail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CocktailRepository extends JpaRepository<Cocktail, Long> {
@@ -12,8 +13,10 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Long> {
 
     // type of query
     Optional<Cocktail> findByNameByNamedQuery(String name);
+
     @Query("SELECT c FROM Cocktail c WHERE c.name = :name")
     Optional<Cocktail> findByNameByJpqlStringQuery(String name);
+
     @Query(value = "SELECT c1_0.id, c1_0.name FROM cocktail c1_0 WHERE c1_0.name = ?1", nativeQuery = true)
     Optional<Cocktail> findByNameByNativeStringQuery(String name);
 
@@ -21,7 +24,10 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Long> {
 
     // more efficiente query
     boolean existsByName(String name);
+
     Cocktail getReferenceByName(String name);
 
 //    https://docs.spring.io/spring-data/jpa/reference/repositories/query-keywords-reference.html
+
+    List<Cocktail> findByBarmanId(Long barmanId);
 }
