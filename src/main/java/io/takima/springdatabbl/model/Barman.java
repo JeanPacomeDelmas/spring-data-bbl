@@ -1,5 +1,6 @@
 package io.takima.springdatabbl.model;
 
+import io.takima.springdatabbl.listener.BarmanEntityListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ import java.util.Objects;
 //@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @FieldNameConstants
 @Accessors(chain = true)
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(value = {AuditingEntityListener.class, BarmanEntityListener.class})
 public class Barman {
 
     @Id
@@ -38,6 +39,22 @@ public class Barman {
     @ToString.Exclude
     @OneToMany(mappedBy = "barman", fetch = FetchType.LAZY)
     private List<Cocktail> cocktails;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    @CreatedDate
+    private Instant createdDate;
+
+    @Column(name = "modified_date")
+    @LastModifiedDate
+    private Instant modifiedDate;
+
+    @Column(name = "created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    private String modifiedBy;
 
     @Override
     public final boolean equals(Object o) {
@@ -54,24 +71,5 @@ public class Barman {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-    @Column(name = "created_date", nullable = false, updatable = false)
-    @CreatedDate
-    private Instant createdDate;
-
-    @Column(name = "modified_date")
-    @LastModifiedDate
-    private Instant modifiedDate;
-
-
-    // populated with the name of the Principal (Spring Security)
-
-    @Column(name = "created_by")
-    @CreatedBy
-    private String createdBy;
-
-    @Column(name = "modified_by")
-    @LastModifiedBy
-    private String modifiedBy;
 }
 

@@ -56,19 +56,4 @@ public class Cocktail {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-    /* Auditing "callbacks" */
-    @PrePersist
-    public void onPrePersist() {
-    }
-
-    @PreUpdate
-    public void onPreUpdate() {
-    }
-
-    @PreRemove
-    public void onPreRemove() {
-    }
-
-
 }

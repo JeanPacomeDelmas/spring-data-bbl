@@ -47,15 +47,36 @@ public class AuditingTests {
     }
 
     @Test
-    void shouldAddCreatedDateAndTrackCreatedBy() {
-        String expectedCreatedBy = "dummy";
+    void shouldAddDatesAndTrackBysUponCreation() {
+        String expectedCreatedAndModifiedBy = "dummy";
 
         Instant barmanCreatedDate = jp.getCreatedDate();
+        Instant barmanLastModifiedDate = jp.getModifiedDate();
         var barmanCreatedBy = jp.getCreatedBy();
+        var barmanModifiedBy = jp.getModifiedBy();
 
-        assertThat(barmanCreatedDate).isNotNull();
-        assertThat(barmanCreatedBy).isEqualTo(expectedCreatedBy);
+        softly.assertThat(barmanCreatedDate).isNotNull();
+        softly.assertThat(barmanLastModifiedDate).isNotNull();
+        softly.assertThat(barmanCreatedBy)
+                .isEqualTo(barmanModifiedBy)
+                .isEqualTo(expectedCreatedAndModifiedBy);
     }
 
+    @Test
+    void shouldSetLastModificationDateAndTrackMofidiedByUponModification() {
+        String expectedCreatedAndModifiedBy = "dummy";
+        jp.setName("jp-on-rhum");
+        jp = barmanService.save(jp);
 
+        Instant barmanCreatedDate = jp.getCreatedDate();
+        Instant barmanLastModifiedDate = jp.getModifiedDate();
+        var barmanCreatedBy = jp.getCreatedBy();
+        var barmanModifiedBy = jp.getModifiedBy();
+
+        softly.assertThat(barmanCreatedDate).isNotNull();
+        softly.assertThat(barmanLastModifiedDate).isNotNull();
+        softly.assertThat(barmanCreatedBy)
+                .isEqualTo(barmanModifiedBy)
+                .isEqualTo(expectedCreatedAndModifiedBy);
+    }
 }
