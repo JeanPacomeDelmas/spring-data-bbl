@@ -31,6 +31,7 @@ public class BarmanService {
     }
 
     // fetch strategy
+    // bsfbiwoc
     @Monitored
     public Barman findByIdWithoutCocktails(Long id) {
         Barman barman = barmanRepository.findById(id).orElseThrow();
@@ -38,6 +39,7 @@ public class BarmanService {
         return barman;
     }
 
+    // bsfbiwlc
     @Monitored
     public Barman findByIdWithLazyCocktails(Long id) {
         Barman barman = barmanRepository.findById(id).orElseThrow();
@@ -45,6 +47,7 @@ public class BarmanService {
         return barman;
     }
 
+    // bsfbiwec
     @Monitored
     public Barman findByIdWithEagerCocktails(Long id) {
         Barman barman = barmanRepository.findByIdWithCocktails(id).orElseThrow();
@@ -53,27 +56,31 @@ public class BarmanService {
     }
 
     // more complex query
+    // bsfbcc
     @Monitored
     public Barman findByCocktailsContaining(Cocktail cocktail) {
         return barmanRepository.findByCocktailsContaining(cocktail).orElseThrow();
     }
 
+    // bsfbci
     @Monitored
     public Barman findByCocktailsId(Long id) {
         return barmanRepository.findByCocktailsId(id).orElseThrow();
     }
 
+    // bsfbc
     @Monitored
     public Barman findByCocktail(Cocktail cocktail) {
         return barmanRepository.findByCocktail(cocktail).orElseThrow();
     }
 
+    // bsfabcic
     @Monitored
     public List<Barman> findAllByCocktailsIngredientsContaining(Ingredient ingredient) {
         return barmanRepository.findAllByCocktailsIngredientsContaining(ingredient);
     }
 
-    // projection
+    // projection bsproj
     @Monitored
     public Barman findBarmanNameById(Long id) {
         IBarmanProjection barmanProjection = barmanRepository.findBarmanById(id).orElseThrow();
