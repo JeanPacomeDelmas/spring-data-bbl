@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -14,17 +13,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@FieldNameConstants // TODO tips
-@Accessors(chain = true) // TODO tips
-@NamedQuery(
-        name = "Cocktail.findByNameByNamedQuery",
-        query = "SELECT c FROM Cocktail c WHERE c.name = :name"
-)
+@FieldNameConstants
+@Accessors(chain = true)
 public class Cocktail {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -32,12 +26,10 @@ public class Cocktail {
     @ToString.Exclude
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
-    @BatchSize(size = 2)
     private List<Ingredient> ingredients;
 
     @ToString.Exclude
-//    @ManyToOne(fetch = FetchType.EAGER) // getReference nok
-    @ManyToOne(fetch = FetchType.LAZY) // getReference ok
+    @ManyToOne(fetch = FetchType.EAGER)
     private Barman barman;
 
     @Override
