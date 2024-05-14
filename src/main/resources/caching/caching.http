@@ -1,0 +1,35 @@
+### Create a Barman
+POST http://localhost:8080/api/barmans
+Content-Type: application/json
+
+{
+  "name": "Jeffrey",
+  "cocktails": []
+}
+
+<> 2024-05-13T223035.500.json
+
+
+### Print cache
+GET http://localhost:8080/api/caches/barmans
+
+
+### Get a Barman
+GET http://localhost:8080/api/barmans/2
+
+<> 2024-05-13T214415.500.json
+
+
+### Remove a Barman
+DELETE http://localhost:8080/api/barmans/1
+
+
+###
+PUT http://localhost:8080/api/barmans/2
+Content-Type: application/json
+
+{
+  "name": "Jeffrey Jr."
+}
+
+

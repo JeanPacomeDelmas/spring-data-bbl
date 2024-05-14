@@ -1,26 +1,44 @@
 package io.takima.springdatabbl.controller;
 
-import io.takima.springdatabbl.model.Cocktail;
-import io.takima.springdatabbl.service.CocktailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import io.takima.springdatabbl.Monitored;
+import io.takima.springdatabbl.model.Barman;
+import io.takima.springdatabbl.service.BarmanCachedService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/barmans")
 public class BarmanController {
-    @Autowired
-    private CocktailService cocktailService;
 
-    // TODO: 5/11/2024 move to Barman controller
-    @GetMapping("/{barmanId}/cocktails")
-    public List<Cocktail> getAllCocktailsForBarman(@PathVariable Long barmanId) {
-        return cocktailService.getAllCocktailsByBarmanId(barmanId);
+    private final BarmanCachedService barmanCachedService;
+
+    public BarmanController(BarmanCachedService barmanCachedService) {
+        this.barmanCachedService = barmanCachedService;
     }
 
-    // TODO: 5/11/2024 update cocktail name
+    @Monitored
+    @PostMapping
+    public ResponseEntity<Barman> createBarman(@RequestBody Barman barman) {
+        Barman createdBarman = barmanCachedService.createBarman(barman);
+        return ResponseEntity.ok(createdBarman);
+    }
+
+    @Monitored
+    @GetMapping("/{id}")
+    public Barman getBarmanById(@PathVariable Long id) {
+        return barmanCachedService.getById(id);
+    }
+
+    @Monitored
+    @DeleteMapping("/{id}")
+    public void removeBarman(@PathVariable Long id) {
+        barmanCachedService.removeBarman(id);
+    }
+
+    @Monitored
+    @PutMapping("/{id}")
+    public Barman updateBarman(@PathVariable Long id, @RequestBody Barman barman) {
+        return barmanCachedService.updateBarman(id, barman);
+    }
+
 }
