@@ -1,32 +1,37 @@
-### Create a Barman
+### Create a Barman (jeff)
 POST http://localhost:8080/api/barmans
 Content-Type: application/json
+Authorization: Basic amVmZjpwYXNzd29yZA==
 
 {
-  "name": "Jeffrey",
+  "name": "Jeff Undercover",
   "cocktails": []
 }
 
 <> 2024-05-13T223035.500.json
 
 
-### Print cache
+### Print cache (jeff)
 GET http://localhost:8080/api/caches/barmans
+Authorization: Basic amVmZjpwYXNzd29yZA==
 
 
-### Get a Barman
+### Get a Barman (jeff)
 GET http://localhost:8080/api/barmans/1
+Authorization: Basic amVmZjpwYXNzd29yZA==
 
 <> 2024-05-13T214415.500.json
 
 
-### Remove a Barman
+### Remove a Barman (jeff)
 DELETE http://localhost:8080/api/barmans/1
+Authorization: Basic amVmZjpwYXNzd29yZA==
 
 
-###
+### Update a Barman (admin)
 PUT http://localhost:8080/api/barmans/1
 Content-Type: application/json
+Authorization: Basic YWRtaW46cGFzc3dvcmQ=
 
 {
   "name": "Jeffrey Jr."
