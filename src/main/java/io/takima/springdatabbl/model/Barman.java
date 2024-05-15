@@ -1,20 +1,17 @@
 package io.takima.springdatabbl.model;
 
 import io.takima.springdatabbl.listener.BarmanEntityListener;
+import io.takima.springdatabbl.model.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,10 +19,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
 @FieldNameConstants
 @Accessors(chain = true)
-@EntityListeners(value = {AuditingEntityListener.class, BarmanEntityListener.class})
-public class Barman /*extends Auditable*/ {
+@EntityListeners(value = {BarmanEntityListener.class})
+public class Barman extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,22 +35,6 @@ public class Barman /*extends Auditable*/ {
     @ToString.Exclude
     @OneToMany(mappedBy = "barman", fetch = FetchType.LAZY)
     private List<Cocktail> cocktails;
-
-    @Column(name = "created_date", nullable = false, updatable = false)
-    @CreatedDate
-    private Instant createdDate;
-
-    @Column(name = "modified_date")
-    @LastModifiedDate
-    private Instant modifiedDate;
-
-    @Column(name = "created_by")
-    @CreatedBy
-    private String createdBy;
-
-    @Column(name = "modified_by")
-    @LastModifiedBy
-    private String modifiedBy;
 
     @Override
     public final boolean equals(Object o) {
