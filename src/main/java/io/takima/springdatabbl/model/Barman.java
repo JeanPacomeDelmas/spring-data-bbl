@@ -22,13 +22,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-// L2 cache concurrent strategy
-//@Cacheable
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @FieldNameConstants
 @Accessors(chain = true)
 @EntityListeners(value = {AuditingEntityListener.class, BarmanEntityListener.class})
-public class Barman {
+public class Barman /*extends Auditable*/ {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
