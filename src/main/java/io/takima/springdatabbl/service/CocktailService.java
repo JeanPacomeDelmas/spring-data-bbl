@@ -45,6 +45,18 @@ public class CocktailService {
         return saveCocktail(cocktail.setBarman(barman));
     }
 
+    public Cocktail updateCocktail(Long id, Cocktail barman) {
+        Cocktail existing = cocktailRepository.findById(id)
+                .orElseThrow()
+                .setName(barman.getName());
+
+        Cocktail updated = cocktailRepository.save(existing);
+
+        log.info("[UPDATE] Cocktail updated: {}", updated);
+
+        return updated;
+    }
+
     private Cocktail saveCocktail(Cocktail cocktail) {
         Cocktail saved = cocktailRepository.save(cocktail);
         log.info("Saved cocktail: {}", saved);

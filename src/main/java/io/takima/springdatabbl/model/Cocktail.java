@@ -7,6 +7,8 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -16,8 +18,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@FieldNameConstants // TODO tips
-@Accessors(chain = true) // TODO tips
+//@AuditTable(value = "audit_cocktail")
+@FieldNameConstants
+@Accessors(chain = true)
 @NamedQuery(
         name = "Cocktail.findByNameByNamedQuery",
         query = "SELECT c FROM Cocktail c WHERE c.name = :name"
@@ -28,6 +31,7 @@ public class Cocktail {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Audited
     private String name;
 
     @ToString.Exclude
