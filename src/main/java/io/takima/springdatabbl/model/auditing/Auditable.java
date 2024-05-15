@@ -6,6 +6,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,6 +20,7 @@ import java.time.Instant;
 @MappedSuperclass // mark this class as a NON-PERSISTENT. Hibernate will NOt create/look up a table MAPPING for this class.
 @EntityListeners(AuditingEntityListener.class) // => Automatically populate auditing-related fields in entities.
 @SuperBuilder
+@Audited
 public class Auditable {
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)
