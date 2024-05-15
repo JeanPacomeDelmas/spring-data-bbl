@@ -19,6 +19,32 @@ public class CocktailService {
     private final BarmanRepository barmanRepository;
     private final CocktailRepository cocktailRepository;
 
+    // find vs reference
+    @Transactional
+    public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
+        Barman barman = barmanRepository.findById(barmanId).orElseThrow();
+
+        Cocktail savedCocktail = cocktailRepository.save(cocktail.setBarman(barman));
+        log.info("Saved cocktail: {}", savedCocktail);
+        return savedCocktail;
+    }
+
+    @Transactional
+    public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
+        Barman barman = barmanRepository.getReferenceById(barmanId);
+
+        Cocktail savedCocktail = cocktailRepository.save(cocktail.setBarman(barman));
+        log.info("Saved cocktail: {}", savedCocktail);
+        return savedCocktail;
+    }
+
+
+
+
+
+
+
+
     @Monitored
     @Transactional
     public Cocktail save(Cocktail cocktail) {
@@ -31,26 +57,5 @@ public class CocktailService {
     @Transactional
     public void deleteByName(String name) {
         cocktailRepository.deleteByName(name);
-    }
-
-    // find vs reference
-    @Monitored
-    @Transactional
-    public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
-        Barman barman = barmanRepository.findById(barmanId).orElseThrow();
-
-        Cocktail saved = cocktailRepository.save(cocktail.setBarman(barman));
-        log.info("Saved cocktail: {}", saved);
-        return saved;
-    }
-
-    @Monitored
-    @Transactional
-    public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
-        Barman barman = barmanRepository.getReferenceById(barmanId);
-
-        Cocktail saved = cocktailRepository.save(cocktail.setBarman(barman));
-        log.info("Saved cocktail: {}", saved);
-        return saved;
     }
 }
