@@ -3,6 +3,7 @@ package io.takima.springdatabbl.service;
 import io.takima.springdatabbl.Monitored;
 import io.takima.springdatabbl.dao.BarmanRepository;
 import io.takima.springdatabbl.dao.CocktailRepository;
+import io.takima.springdatabbl.model.Barman;
 import io.takima.springdatabbl.model.Cocktail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,15 +33,23 @@ public class CocktailService {
         cocktailRepository.deleteByName(name);
     }
 
+    // find vs reference
     @Monitored
-    public Cocktail getReferenceById(Long id) {
-        return cocktailRepository.getReferenceById(id);
+    @Transactional
+    public Cocktail saveWithBarmanByFind(Cocktail cocktail, Long barmanId) {
+        Barman barman = barmanRepository.findById(barmanId).orElseThrow();
+
+        Cocktail saved = cocktailRepository.save(cocktail.setBarman(barman));
+        log.info("Saved cocktail: {}", saved);
+        return saved;
     }
 
-    // find vs reference
+    @Monitored
+    @Transactional
+    public Cocktail saveWithBarmanByReference(Cocktail cocktail, Long barmanId) {
+        Barman barman = barmanRepository.getReferenceById(barmanId);
 
-    private Cocktail saveCocktail(Cocktail cocktail) {
-        Cocktail saved = cocktailRepository.save(cocktail);
+        Cocktail saved = cocktailRepository.save(cocktail.setBarman(barman));
         log.info("Saved cocktail: {}", saved);
         return saved;
     }
